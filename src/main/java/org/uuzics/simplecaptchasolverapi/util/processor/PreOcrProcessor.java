@@ -17,11 +17,12 @@ public class PreOcrProcessor {
         double threshold_thresh = configuration.getOcr().getThreshold_thresh();
         double threshold_maxval = configuration.getOcr().getThreshold_maxval();
         int erode_element_size = configuration.getOcr().getErode_element_size();
+        int resize_size = configuration.getOcr().getResize_size();
 
-        OpenCVFrameConverter.ToMat matConverter = new OpenCVFrameConverter.ToMat();
+        OpenCVFrameConverter.ToMat toMatConverter = new OpenCVFrameConverter.ToMat();
         Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
 
-        Mat originMat = matConverter.convert((java2DFrameConverter.convert(originalImage)));
+        Mat originMat = toMatConverter.convert((java2DFrameConverter.convert(originalImage)));
 
         Mat grayMat = new Mat(originMat.rows(), originMat.cols(), CV_8UC1);
         opencv_imgproc.cvtColor(originMat, grayMat, opencv_imgproc.COLOR_RGB2GRAY);
@@ -33,6 +34,9 @@ public class PreOcrProcessor {
         Mat erodeElement = opencv_imgproc.getStructuringElement(MORPH_RECT, new Size(erode_element_size, erode_element_size));
         opencv_imgproc.erode(binMat, erodeMat, erodeElement);
 
-        return java2DFrameConverter.convert(matConverter.convert(erodeMat));
+        Mat resizeMat = new Mat(originMat.rows() * resize_size, originMat.cols() * resize_size, CV_8UC1);
+        opencv_imgproc.resize(erodeMat, resizeMat, resizeMat.size(), resize_size, resize_size, opencv_imgproc.INTER_LINEAR);
+
+        return java2DFrameConverter.convert(toMatConverter.convert(resizeMat));
     }
 }

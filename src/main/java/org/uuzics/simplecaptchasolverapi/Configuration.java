@@ -34,6 +34,7 @@ public class Configuration {
         private double threshold_thresh;
         private double threshold_maxval;
         private int erode_element_size;
+        private int resize_size;
 
         private String tess_data;
         private String tess_lang;
@@ -42,6 +43,7 @@ public class Configuration {
             this.threshold_thresh = 130;
             this.threshold_maxval = 255;
             this.erode_element_size = 2;
+            this.resize_size = 1;
         }
     }
 }
