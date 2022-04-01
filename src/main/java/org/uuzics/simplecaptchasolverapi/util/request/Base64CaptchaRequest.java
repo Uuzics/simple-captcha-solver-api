@@ -18,6 +18,11 @@ package org.uuzics.simplecaptchasolverapi.util.request;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Base64CaptchaRequest
+ * <br>
+ * Request including Base64 encoded captcha image
+ */
 public class Base64CaptchaRequest {
     @Getter @Setter private String base64;
 }

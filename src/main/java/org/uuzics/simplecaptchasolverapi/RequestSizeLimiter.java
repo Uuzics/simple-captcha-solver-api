@@ -25,11 +25,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * RequestSizeLimiter extends OncePerRequestFilter
+ * <br>
+ * Limits size on each request before captcha solving
+ */
 @Component
 public class RequestSizeLimiter extends OncePerRequestFilter {
     @Autowired
     private Configuration configuration;
 
+    /**
+     * Overrides doFilterInternal
+     * <br>
+     * Throws IOException when request size exceeded limit
+     *
+     * @param request     HttpServletRequest
+     * @param response    HttpServletResponse
+     * @param filterChain FilterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         long request_size_limit_bytes = configuration.getApi().getRequest_size_limit_bytes();

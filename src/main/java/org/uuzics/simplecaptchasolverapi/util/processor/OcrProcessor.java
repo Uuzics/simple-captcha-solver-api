@@ -27,14 +27,17 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/**
+ * Captcha solving processor
+ */
 public class OcrProcessor {
     /**
      * Perform OCR process on captcha image.
      *
-     * @param originalImage Image to be OCRed
-     * @param configuration Configuration
-     * @return OCRed captcha text
-     * @throws UnsupportedEncodingException Throws UnsupportedEncodingException
+     * @param originalImage captcha image to be solved
+     * @param configuration general configuration
+     * @return solved captcha text
+     * @throws UnsupportedEncodingException
      */
     public static String doOcrProcess(BufferedImage originalImage, Configuration configuration) throws UnsupportedEncodingException {
         String tess_data = configuration.getOcr().getTess_data();
@@ -95,7 +98,7 @@ public class OcrProcessor {
      * This method is taken from tess4j-4.6.1 <code>net.sourceforge.tess4j.util.ImageIOHelper</code>
      * and changed to a static method.
      *
-     * @param bi Input image
+     * @param bi input image
      * @return pixel data
      */
     private static ByteBuffer convertImageData(BufferedImage bi) {

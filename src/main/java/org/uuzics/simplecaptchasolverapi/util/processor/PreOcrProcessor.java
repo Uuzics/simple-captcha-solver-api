@@ -27,7 +27,19 @@ import java.awt.image.BufferedImage;
 import static org.bytedeco.opencv.global.opencv_core.CV_8UC1;
 import static org.opencv.imgproc.Imgproc.MORPH_RECT;
 
+/**
+ * Pre OCR processor
+ * <br>
+ * Enhance image quality before captcha solving
+ */
 public class PreOcrProcessor {
+    /**
+     * Perform preprocess on captcha image
+     *
+     * @param originalImage image to be preprocessed
+     * @param configuration general configuration
+     * @return preprocessed image
+     */
     public static BufferedImage doPreOcrProcess(BufferedImage originalImage, Configuration configuration) {
         double threshold_thresh = configuration.getOcr().getThreshold_thresh();
         double threshold_maxval = configuration.getOcr().getThreshold_maxval();

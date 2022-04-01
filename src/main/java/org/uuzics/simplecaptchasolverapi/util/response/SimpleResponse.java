@@ -18,6 +18,11 @@ package org.uuzics.simplecaptchasolverapi.util.response;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * SimpleResponse
+ * <br>
+ * Response including only status and solution
+ */
 public class SimpleResponse {
     @Getter @Setter private boolean success;
     @Getter @Setter private String text;

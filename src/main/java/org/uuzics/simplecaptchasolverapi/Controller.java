@@ -31,11 +31,20 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Controller for Spring Boot API
+ */
 @RestController
 public class Controller {
     @Autowired
     private Configuration configuration;
 
+    /**
+     * Solve a Base64 encoded captcha
+     *
+     * @param request the request containing Base64 encoded captcha image
+     * @return SimpleResponse
+     */
     @RequestMapping(value = "/solveBase64Captcha", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public SimpleResponse solveBase64Captcha(@RequestBody Base64CaptchaRequest request) {
         String base64ImageString = request.getBase64();
