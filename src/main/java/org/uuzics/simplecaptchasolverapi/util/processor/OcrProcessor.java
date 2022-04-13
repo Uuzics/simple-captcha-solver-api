@@ -42,6 +42,7 @@ public class OcrProcessor {
     public static String doOcrProcess(BufferedImage originalImage, Configuration configuration) throws UnsupportedEncodingException {
         String tess_data = configuration.getOcr().getTess_data();
         String tess_lang = configuration.getOcr().getTess_lang();
+        int tess_psm = configuration.getOcr().getTess_psm();
 
         TessBaseAPI tessBaseAPI = new TessBaseAPI();
         tessBaseAPI.Init(tess_data, tess_lang);
@@ -67,6 +68,7 @@ public class OcrProcessor {
         int ySize = originalImage.getHeight();
         int byteSpp = bpp / 8;
         int byteSpl = (int) Math.ceil(xSize * bpp / 8.0);
+        tessBaseAPI.SetPageSegMode(tess_psm);
         tessBaseAPI.SetImage(buff, xSize, ySize, byteSpp, byteSpl);
 
         BytePointer bp = tessBaseAPI.GetUTF8Text();

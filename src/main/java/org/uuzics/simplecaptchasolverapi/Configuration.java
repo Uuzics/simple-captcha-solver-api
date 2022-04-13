@@ -43,7 +43,7 @@ public class Configuration {
         public Api() {
             this.length_expected = 4;
             this.fail_if_length_unexpected = false;
-            this.request_size_limit_bytes = 1000;
+            this.request_size_limit_bytes = 4096;
         }
     }
 
@@ -56,12 +56,15 @@ public class Configuration {
 
         private String tess_data;
         private String tess_lang;
+        private int tess_psm;
 
         public Ocr() {
             this.threshold_thresh = 130;
             this.threshold_maxval = 255;
             this.erode_element_size = 2;
             this.resize_size = 1;
+
+            this.tess_psm = 7;
         }
     }
 }
