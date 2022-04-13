@@ -61,7 +61,8 @@ public class Controller {
             Pattern pattern = Pattern.compile("\\s*|\t|\r|\n");
             Matcher matcher = pattern.matcher(text);
             text = matcher.replaceAll("");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Fail on any exception
             return new SimpleResponse(false, "");
         }
         if (text != null) {
