@@ -51,28 +51,34 @@ public class Controller {
 
         int length_expected = this.configuration.getApi().getLength_expected();
         boolean fail_if_length_unexpected = this.configuration.getApi().isFail_if_length_unexpected();
+        int minimum_confidence = this.configuration.getApi().getMinimum_confidence();
+        boolean fail_if_unconfident = this.configuration.getApi().isFail_if_unconfident();
 
         String text;
+        int confidence;
         try {
             BufferedImage rawImage = RawImageProcessor.parseBase64ToBufferedImage(base64ImageString);
             BufferedImage preProcessedImage = PreOcrProcessor.doPreOcrProcess(rawImage, this.configuration);
-            text = OcrProcessor.doOcrProcess(preProcessedImage, this.configuration);
+            OcrProcessor.OcrResult ocrResult = OcrProcessor.doOcrProcess(preProcessedImage, this.configuration);
+            text = ocrResult.getText();
+            confidence = ocrResult.getConfidence();
             // Remove unwanted chars
             Pattern pattern = Pattern.compile("\\s*|\t|\r|\n");
             Matcher matcher = pattern.matcher(text);
             text = matcher.replaceAll("");
         } catch (Exception e) {
             // Fail on any exception
-            return new SimpleResponse(false, "");
+            return new SimpleResponse(false, "", -1);
         }
         if (text != null) {
-            if (!fail_if_length_unexpected || text.length() == length_expected) {
-                return new SimpleResponse(true, text);
+            // Fail when length unexpected OR unconfident about result
+            if ((fail_if_length_unexpected && text.length() != length_expected) || (fail_if_unconfident && confidence < minimum_confidence)) {
+                return new SimpleResponse(false, text, confidence);
             } else {
-                return new SimpleResponse(false, text);
+                return new SimpleResponse(true, text, confidence);
             }
         } else {
-            return new SimpleResponse(false, "");
+            return new SimpleResponse(false, "", -1);
         }
     }
 }

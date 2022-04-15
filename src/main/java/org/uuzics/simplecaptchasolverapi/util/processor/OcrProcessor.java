@@ -15,6 +15,7 @@
  */
 package org.uuzics.simplecaptchasolverapi.util.processor;
 
+import lombok.Data;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.tesseract.TessBaseAPI;
 import org.uuzics.simplecaptchasolverapi.Configuration;
@@ -39,7 +40,7 @@ public class OcrProcessor {
      * @return solved captcha text
      * @throws UnsupportedEncodingException
      */
-    public static String doOcrProcess(BufferedImage originalImage, Configuration configuration) throws UnsupportedEncodingException {
+    public static OcrResult doOcrProcess(BufferedImage originalImage, Configuration configuration) throws UnsupportedEncodingException {
         String tess_data = configuration.getOcr().getTess_data();
         String tess_lang = configuration.getOcr().getTess_lang();
         int tess_psm = configuration.getOcr().getTess_psm();
@@ -73,10 +74,12 @@ public class OcrProcessor {
 
         BytePointer bp = tessBaseAPI.GetUTF8Text();
         String ocrText = bp.getString("utf-8");
+        int ocrConfidence = tessBaseAPI.MeanTextConf();
+        OcrResult ocrResult = new OcrResult(ocrText, ocrConfidence);
         tessBaseAPI.End();
         bp.deallocate();
 
-        return ocrText;
+        return ocrResult;
     }
 
     /**
@@ -111,5 +114,21 @@ public class OcrProcessor {
         buf.put(pixelData);
         ((Buffer) buf).flip();
         return buf;
+    }
+
+    @Data
+    public static class OcrResult {
+        private String text;
+        private int confidence;
+
+        public OcrResult() {
+            this.text = "";
+            this.confidence = 0;
+        }
+
+        public OcrResult(String text, int confidence) {
+            this.text = text;
+            this.confidence = confidence;
+        }
     }
 }

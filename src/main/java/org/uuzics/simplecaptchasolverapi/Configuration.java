@@ -38,11 +38,19 @@ public class Configuration {
     public class Api {
         private int length_expected;
         private boolean fail_if_length_unexpected;
+
+        private int minimum_confidence;
+        private boolean fail_if_unconfident;
+
         private long request_size_limit_bytes;
 
         public Api() {
             this.length_expected = 4;
             this.fail_if_length_unexpected = false;
+
+            this.minimum_confidence = 90;
+            this.fail_if_unconfident = true;
+
             this.request_size_limit_bytes = 4096;
         }
     }

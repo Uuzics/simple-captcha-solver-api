@@ -26,12 +26,14 @@ import lombok.Setter;
 public class SimpleResponse {
     @Getter @Setter private boolean success;
     @Getter @Setter private String text;
+    @Getter @Setter private int confidence;
 
     public SimpleResponse() {
     }
 
-    public SimpleResponse(boolean success, String text) {
+    public SimpleResponse(boolean success, String text, int confidence) {
         this.success = success;
         this.text = text;
+        this.confidence = confidence;
     }
 }
