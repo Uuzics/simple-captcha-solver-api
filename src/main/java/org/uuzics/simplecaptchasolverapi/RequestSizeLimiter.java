@@ -49,7 +49,7 @@ public class RequestSizeLimiter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         long request_size_limit_bytes = configuration.getApi().getRequest_size_limit_bytes();
-        if (request.getContentLengthLong() > request_size_limit_bytes) {
+        if (request_size_limit_bytes > 0 && (request.getContentLengthLong() > request_size_limit_bytes)) {
             throw new IOException("Request size exceeded limit of " + request_size_limit_bytes + " bytes");
         }
         filterChain.doFilter(request, response);
