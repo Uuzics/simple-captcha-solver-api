@@ -47,7 +47,7 @@ public class Controller {
      */
     @RequestMapping(value = "/solveBase64Captcha", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public SimpleResponse solveBase64Captcha(@RequestBody Base64CaptchaRequest request) {
-        String base64ImageString = request.getBase64();
+        String base64ImageUrl = request.getBase64();
 
         int length_expected = this.configuration.getApi().getLength_expected();
         boolean fail_if_length_unexpected = this.configuration.getApi().isFail_if_length_unexpected();
@@ -57,7 +57,7 @@ public class Controller {
         String text;
         int confidence;
         try {
-            BufferedImage rawImage = RawImageProcessor.parseBase64ToBufferedImage(base64ImageString);
+            BufferedImage rawImage = RawImageProcessor.parseBase64ToBufferedImage(base64ImageUrl);
             BufferedImage preProcessedImage = PreOcrProcessor.doPreOcrProcess(rawImage, this.configuration);
             OcrProcessor.OcrResult ocrResult = OcrProcessor.doOcrProcess(preProcessedImage, this.configuration);
             text = ocrResult.getText();

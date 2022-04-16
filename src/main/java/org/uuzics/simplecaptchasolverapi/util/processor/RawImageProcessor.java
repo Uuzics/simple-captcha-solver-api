@@ -29,11 +29,21 @@ public class RawImageProcessor {
     /**
      * Parse a Base64 encoded image string to BufferedImage
      *
-     * @param base64ImageString Base64 encoded image
+     * @param base64ImageUrl Base64 encoded image
      * @return the BufferedImage
      * @throws IOException
      */
-    public static BufferedImage parseBase64ToBufferedImage(String base64ImageString) throws IOException {
+    public static BufferedImage parseBase64ToBufferedImage(String base64ImageUrl) throws IOException {
+        String base64ImageString;
+        // quick and dirty data url split 'cause regex can be troublesome lol
+        // illegal base64 will cause IOException when calling Base64.getDecoder().decode()
+        // and unsupported image media type will cause BufferedImage related exception
+        // both can be caught & handled by the controller so shouldn't be a problem?
+        if (base64ImageUrl.startsWith("data:") && base64ImageUrl.contains(",")) {
+            base64ImageString = base64ImageUrl.substring(base64ImageUrl.indexOf(",") + 1);
+        } else {
+            throw new IOException("Illegal Base64 Data URL");
+        }
         byte[] imageBytes = Base64.getDecoder().decode(base64ImageString.getBytes());
         return ImageIO.read(new ByteArrayInputStream(imageBytes));
     }
