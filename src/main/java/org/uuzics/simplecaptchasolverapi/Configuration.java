@@ -49,9 +49,9 @@ public class Configuration {
             this.fail_if_length_unexpected = false;
 
             this.minimum_confidence = 90;
-            this.fail_if_unconfident = true;
+            this.fail_if_unconfident = false;
 
-            this.request_size_limit_bytes = 4096;
+            this.request_size_limit_bytes = 0;
         }
     }
 
